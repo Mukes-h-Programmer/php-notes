@@ -4,6 +4,7 @@ ob_start();
 session_start();
 
 require_once '../includes/config.php';
+require_once '../includes/db.php';
 $errors = [];
 if(isset($_POST))
 {
@@ -35,13 +36,49 @@ if (!empty($email) && !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
     {
         $erros[] = "Confirm password doesn't match.";
     }
-    if (!empty($errors)) {
-        $_SESSION['errors'] = $errors;
-        header('location:'. SITEURL .'signup.php');
-        exit();
+  
 
-    }
+   // if email already exist
+
+   if(!empty($email)){
+       $conn = db_connect();
+       $sanitizeEmail = mysqli_real_escape_string($conn, $email);
+       $emailSql = "SELECT id FROM users WHERE email = '{$sanitizeEmail}'";
+       $sqlResult = mysqli_query($conn, $emailSql);
+       $emailRow = mysqli_num_rows($sqlResult);
+
+       if($emailRow > 0)
+       {
+           $errors[] = "Email Address already exists.";
+       } 
+       db_close($conn);
+
+   }
+   if (!empty($errors)) {
+    $_SESSION['errors'] = $errors;
+    header('location:'. SITEURL .'signup.php');
+    exit();
+    
+}
+
    #if no errors
+   $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+   $sql = "INSERT INTO users (first_name,last_name, email, password) VALUES('{$firstName}', '{$lastName}','{$email}','{$passwordHash}')";
+
+   $conn = db_connect();
+   
+  $results = mysqli_query($conn, $sql);
+
+   if(true === $results){
+       db_close($conn);
+       $message = "You are registered successsfully!";
+       $_SESSION['success'] = $message;
+       header('location:'. SITEURL .'signup.php');
+ 
+   } 
+   else{
+       echo "error";
+   }
 
 }
 

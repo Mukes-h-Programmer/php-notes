@@ -1,6 +1,6 @@
 <?php
 
-// require_once 'includes/config.php';
+require_once 'includes/config.php';
 include_once 'public/common/header.php';
 
 ?>
@@ -11,6 +11,20 @@ include_once 'public/common/header.php';
 </style>
 <div class="row justify-content-center wrapper">
 <div class="col-md-6">
+<?php
+if (!empty($_SESSION['success'])){
+?>
+<div class="alert alert-success text-center">
+
+<?php echo $_SESSION['success']; ?>
+
+</div>
+<?php
+unset($_SESSION['success']);
+}
+?>
+
+
 <?php
 if (!empty($_SESSION['errors'])){
 ?>
@@ -62,7 +76,7 @@ unset($_SESSION['errors']);
                                          
 </form>
 </article> 
-<div class="border-top card-body text-center">Have an account? <a href="/contactbook/login.php">Log In</a></div>
+<div class="border-top card-body text-center">Have an account? <a href="<?php echo SITEURL."login.php"; ?>">Log In</a></div>
 </div> 
 </div> 
 
