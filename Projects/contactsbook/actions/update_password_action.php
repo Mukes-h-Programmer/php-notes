@@ -52,7 +52,7 @@ if(isset($_POST))
                 }
                     
         }else{
-            $erros[] = "Old password is incorrect.";
+            $errors[] = "Old password is incorrect.";
             $_SESSION['errors'] = $errors;
             header('location:'.SITEURL."change_password.php");
             exit();
