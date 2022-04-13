@@ -1,7 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <?php
+<?php
     ob_start();
     session_start();
     require_once 'includes/config.php';
@@ -13,7 +10,13 @@
     //   print_arr($_SESSION['user']); 
     //   # code...
     // }
+
+    $currentPage = !empty($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
     ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contact Book</title>
@@ -32,8 +35,8 @@
   </button>
   <div class="collapse navbar-collapse" id="navbarNavDropdown">
     <ul class="navbar-nav">
-      <li class="nav-item ">
-        <a class="nav-link" href="/contactbook/">Home <span class="sr-only">(current)</span></a>
+      <li class="nav-item <?php if ($currentPage == SITEURL) {echo "active";} ?>">
+        <a class="nav-link" href="<?php echo SITEURL; ?>">Home <span class="sr-only">(current)</span></a>
       </li>
     <?php
     if(empty($user)){
@@ -41,10 +44,10 @@
   
 
 
-            <li class="nav-item"  active>
+            <li class="nav-item <?php if ($currentPage == SITEURL. "signup.php") {echo "active";} ?>">
         <a class="nav-link" href="<?php echo SITEURL."signup.php"; ?>">Signup</a>
       </li>
-      <li class="nav-item" >
+      <li class="nav-item <?php if ($currentPage == SITEURL. "login.php") {echo "active";} ?>" >
         <a class="nav-link" href="<?php echo SITEURL."login.php"; ?>">Login</a>
       </li>
 
@@ -52,12 +55,12 @@
     }
 if (!empty($user)) {
   ?>
-  <li class="nav-item">
+  <li class="nav-item <?php if ($currentPage == SITEURL. "addcontact.php") {echo "active";} ?>">
         <a class="nav-link" href="<?php echo SITEURL."addcontact.php"; ?>">Add Contact</a>
       </li>
 
-      <li class="nav-item dropdown ">
-        <a class="nav-link dropdown-toggle" href="" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <li class="nav-item dropdown <?php if ($currentPage == SITEURL. "profile.php") {echo "active";} ?> ">
+        <a class="nav-link dropdown-toggle" href="<?php echo SITEURL. "profile.php"; ?>" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         <?php
 
         echo !empty($user['first_name']) ? $user['first_name'] : 'Guest';     
@@ -65,6 +68,9 @@ if (!empty($user)) {
       </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
           <a class="dropdown-item" href="<?php echo SITEURL."profile.php"; ?>"">Profile</a>
+          <a class="dropdown-item" href="<?php echo SITEURL."edit_profile.php"; ?>"">Edit Profile</a>
+          <a class="dropdown-item" href="<?php echo SITEURL."change_password.php"; ?>"">Change Password</a>
+
           <a class="dropdown-item" href="<?php echo SITEURL."logout.php"; ?>"">Logout</a>
         </div>
       </li>

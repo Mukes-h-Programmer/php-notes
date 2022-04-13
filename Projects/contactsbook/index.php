@@ -3,6 +3,7 @@
 require_once 'includes/config.php';
 include_once 'public/common/header.php';
 require_once 'includes/db.php';
+
 $userId = (!empty($_SESSION['user']) && !empty($_SESSION['user']['id'])) ? $_SESSION['user']['id'] : 0;
 
 ?>
@@ -63,9 +64,9 @@ if(!empty($userId)){
       <td class="align-middle"><img src="<?php echo $userImage; ?>" class="img-thumbnail img-list" style = " width: 60px; " /></td>
       <td class="align-middle"><?php echo $row['first_name'] . " ". $row['last_name']; ?></td>
       <td class="align-middle"> 
-      <a href="/contactbook/view.php?id=9" class="btn btn-success">View</a>
-      <a href="/contactbook/addcontact.php?id=9" class="btn btn-primary">Edit</a>
-      <a href="/contactbook/delete.php?id=9" class="btn btn-danger" onclick="return confirm(`Are you sure want to delete this contact?`)">Delete</a>
+      <a href="<?php echo SITEURL . "view.php?id=".$row['id']; ?>" class="btn btn-success">View</a>
+      <a href="<?php echo SITEURL . "addcontact.php?id=".$row['id']; ?>" class="btn btn-primary">Edit</a>
+      <a href="<?php echo SITEURL . "dlt.php?id=".$row['id']; ?>" class="btn btn-danger" onclick="return confirm(`Are you sure want to delete this contact?`)">Delete</a>
       </td>
     </tr>
 <?php
@@ -80,12 +81,23 @@ getpagination($numRows, $currentPage);
 
 
 <?php
+}else{
+  echo '<div class = "alert alert-danger text-center mt-2">No Contacts available </div>';
 }
-}
+}else{
 ?>
 
-<?php
+<style>
+  body { background-image : url("<?php  echo SITEURL . "public/images/m.png"; ?>");
+    
+  background-repeat: no-repeat; background-size: cover;
+  }
 
+  
+
+</style>
+<?php
+}
 require_once 'includes/config.php';
 include_once 'public/common/footer.php';
 

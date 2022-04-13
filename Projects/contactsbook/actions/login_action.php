@@ -46,7 +46,9 @@ if(isset($_POST)){
                 if(password_verify($password, $passwordInDb)){
                     unset($userInfo['password']);
                     $_SESSION['user'] = $userInfo;
-                    header('location:' . SITEURL);
+                    $request_url = !empty($_SESSION['request_url']) ? $_SESSION['request_url'] : SITEURL;
+                    unset($_SESSION['reques_)url']);
+                    header('location:' . $request_url);
 
                 }else{
                     $errors[] = "Incorrect Password!";

@@ -11,36 +11,11 @@ include_once 'public/common/header.php';
 </style>
 <div class="row justify-content-center wrapper">
 <div class="col-md-6">
-<?php
-if (!empty($_SESSION['success'])){
-?>
-<div class="alert alert-success text-center">
-
-<?php echo $_SESSION['success']; ?>
-
-</div>
-<?php
-unset($_SESSION['success']);
-}
-?>
-
 
 <?php
-if (!empty($_SESSION['errors'])){
+include_once 'public/common/alert_message.php';
 ?>
-<div class="alert alert-danger">
-    <ul>
-        <?php
-        foreach ($_SESSION['errors'] as $errors) {
-            print '<li>'.$errors.'</li>';            
-        }
-        ?>
-    </ul>
-</div>
-<?php
-unset($_SESSION['errors']);
-}
-?>
+
 <div class="card">
 <header class="card-header">
 	<h4 class="card-title mt-2">Sign up</h4>

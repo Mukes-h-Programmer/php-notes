@@ -15,6 +15,7 @@ if (isset($_POST) && !empty($_SESSION['user'])) {
     $phone = trim($_POST['phone']);
     $address = trim($_POST['address']);
     $photofile = !empty($_FILES['photo']) ? $_FILES['photo'] : [];
+    $cId = !empty($_POST['cid']) ? $_POST['cid'] : '';
 
     // validation
     if(empty($firstName)){
@@ -88,12 +89,26 @@ if (!empty($email) && !filter_var($email,FILTER_VALIDATE_EMAIL) ) {
      }
      $ownerID = (!empty($_SESSION['user']) && !empty($_SESSION['user']['id'])) ? $_SESSION['user']['id'] : 0;
     
-     $sql = "INSERT INTO contacts (first_name, last_name, email, phone, address, photo, owner_id) VALUES ('{$firstName}', '$lastName', '{$email}','{$phone}', '{$address}','{$photoName}','{$ownerID}')";      
+     if(!empty($cId)){
+         //update
+         if(!empty($photoName)){
+            $sql = "UPDATE contacts SET first_name = '{$firstName}' , last_name = '{$lastName}', email = '{$email}', phone = '{$phone}', address = '{$address}', photo = '{$photoName}' WHERE id = {$cId} AND owner_id={$ownerID}"; 
+         }else{
+            $sql = "UPDATE contacts SET first_name = '{$firstName}' , last_name = '{$lastName}', email = '{$email}', phone = '{$phone}', address = '{$address}' WHERE id = {$cId} AND owner_id={$ownerID}";
+         }
+        $message = "Contact has been updated successfully!";
+          
+     }     
+     else{
+         //Insert
+        $sql = "INSERT INTO contacts (first_name, last_name, email, phone, address, photo, owner_id) VALUES ('{$firstName}', '{$lastName}', '{$email}','{$phone}', '{$address}','{$photoName}','{$ownerID}')"; 
+        $message = "New Contact has been added successfully!";
+     }
      
      $conn = db_connect();
      if(mysqli_query($conn, $sql)){
          db_close($conn);
-         $message = "New Contact has been added successfully!";
+       
          $_SESSION['success'] = $message;
 
          header('location:'. SITEURL);
